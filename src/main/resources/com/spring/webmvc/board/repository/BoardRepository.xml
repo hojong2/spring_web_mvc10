@@ -11,7 +11,7 @@
         <result property="regDate" column="reg_date"/>
     </resultMap>
     <select id="findAll" resultMap="boardMap">
-        select * from tbl_board
+        select * from tbl_board order by board_no desc
     </select>
     <select id="findOne" resultMap="boardMap">
         select * from tbl_board where board_no = #{board_no}

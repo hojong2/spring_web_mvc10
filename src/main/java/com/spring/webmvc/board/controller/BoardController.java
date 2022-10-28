@@ -8,6 +8,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
@@ -36,5 +38,29 @@ public class BoardController {
             WARN  - 경고
             ERROR - 심각한 에러
          */
+    }
+
+    // 게시물 상세 조회 요청 처리
+    @GetMapping("/content/{bno}")
+    public String content(@PathVariable("bno") Long boardNo, Model model){
+        log.info("/board/content/{} GET!! ", boardNo);
+        Board board = service.getDetail(boardNo);
+
+        model.addAttribute("b", board);
+        return "board/detail";
+    }
+    //게시물 쓰기 화면 요청
+    @GetMapping("/write")
+    public String write(){
+        log.info("/board/write GET!");
+        return "board/write";
+    }
+
+    //게시물 등록 요청
+    @PostMapping("/write")
+    public String write(Board board){
+        log.info("/board/write POST! - {}", board);
+        boolean flag = service.insert(board);
+        return flag ? "redirect:/board/list" : "redirect:/";
     }
 }
